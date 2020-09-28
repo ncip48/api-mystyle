@@ -26,12 +26,16 @@ module.exports = {
       .toLowerCase()
       .split(" ")
       .join("-");
-    db.query(query, [request.body.nama_kategori, category_seo], (error, result) => {
-      return response.status(200).send({
-        result: 1,
-        data: category_seo,
-      });
-    });
+    db.query(
+      query,
+      [request.body.nama_kategori, category_seo],
+      (error, result) => {
+        return response.status(200).send({
+          result: 1,
+          data: category_seo,
+        });
+      }
+    );
   },
   product(request, response) {
     let query =
@@ -51,5 +55,32 @@ module.exports = {
         });
       }
     });
+  },
+  remove(request, response) {
+    let query = "DELETE FROM tb_kategori_produk WHERE id_kategori_produk='"+request.params.id+"'";
+    db.query(query, (error, result) => {
+      return response.status(200).send({
+        result: 1,
+        msg: 'Success deleted category',
+      });
+    });
+  },
+  modify(request, response) {
+    let query =
+      "UPDATE tb_kategori_produk SET nama_kategori=?, kategori_seo=? WHERE id_kategori_produk=?";
+    const category_seo = request.body.nama_kategori
+      .toLowerCase()
+      .split(" ")
+      .join("-");
+    db.query(
+      query,
+      [request.body.nama_kategori, category_seo, request.params.id],
+      (error, result) => {
+        return response.status(200).send({
+          result: 1,
+          msg: "Success edit category",
+        });
+      }
+    );
   },
 };

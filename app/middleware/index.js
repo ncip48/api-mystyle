@@ -1,26 +1,20 @@
-// middleware/users.js
-
-//const { decode } = require("jsonwebtoken");
 const jwt = require("jsonwebtoken");
 require('dotenv/config')
 
 module.exports = {
   validateRegister: (req, res, next) => {
-    // username min length 3
     if (!req.body.username || req.body.username.length < 4) {
       return res.status(400).send({
         msg: "Please enter a username with min. 4 chars",
       });
     }
 
-    // password min 6 chars
     if (!req.body.password || req.body.password.length < 8) {
       return res.status(400).send({
         msg: "Please enter a password with min. 8 chars",
       });
     }
 
-    // password (repeat) does not match
     if (
       !req.body.password_repeat ||
       req.body.password != req.body.password_repeat
@@ -38,7 +32,7 @@ module.exports = {
       const token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.SECRET);
       if(bearer !== 'Bearer'){
-        return res.status(401).send({
+        return res.status(405).send({
           result: 0,
           msg: "Authorization header false or not match"
         })

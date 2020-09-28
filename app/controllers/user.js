@@ -38,11 +38,12 @@ module.exports = {
           msg: "Username or password is incorrect!",
         });
       } else {
+        const role = result[0].type === 0 ? 'user' : 'reseller';
         const token = jwt.sign(
           {
             username: result[0].username,
             id_user: result[0].id_user,
-            role: 'user'
+            role: role
           },
           process.env.SECRET,
           {
@@ -52,7 +53,7 @@ module.exports = {
         return response.status(200).send({
           result: 1,
           token,
-          role: 'user',
+          role: role,
           user: result[0],
         });
       }

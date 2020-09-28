@@ -29,4 +29,18 @@ module.exports = {
       });
     });
   },
+  add(request, response){
+    const uid = request.userData.id_user;
+    const role = request.userData.role;
+    if(role !== 'reseller' || role !== 'admin'){
+      return response.status(401).send({
+        result: 0,
+        msg: "sorry, are you a reseller?"
+      })
+    }
+    return response.status(200).send({
+      result: 1,
+      data: role
+    })
+  }
 };
